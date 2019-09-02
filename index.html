@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Revista UTE</title>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+
+<body>
+    
+    <nav>
+        <a href="index.html" class="actual">Revista UTE</a> <a href="icvu-2019.html">ICVU 2019</a> <a href="psu-nem.html">PSU/NEM</a> <a href="trabajo.html">DESEMPLEO</a> <a href="global-warming.html">CALENTAMIENTO GLOBAL</a>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+
+    <script>
+       let datos;
+let entradas;
+let indoles;
+let anchopantalla=1000;
+let altopantalla=800;
+let alfa=100;
+let foto=[]
+
+function preload() {
+  let url = 'https://api.myjson.com/bins/1c6ucr';
+  datos = loadJSON(url);
+  let url2 = 'https://api.myjson.com/bins/12i4cb';
+  entradas = loadJSON(url2);
+  let url3 = 'https://api.myjson.com/bins/16p8xf';
+  indoles = loadJSON(url3);
+  let url4 = 'https://api.myjson.com/bins/nlg4j';
+  tipos = loadJSON(url4);
+  let url5 = 'https://api.myjson.com/bins/1bjiuj';
+  foto = loadJSON(url5)
+  
+  img1 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute1.jpg");
+  img2 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute2.jpg");
+  img3 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute3.jpg");
+  img4 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute4.jpg");
+   img5 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute5.jpg");
+  img6 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute6.jpg");
+  img7 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute7.jpg");
+  img8 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute8.jpg");
+  img9 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute9.jpg");
+   img10 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute10.jpg");
+  img11 = loadImage
+  ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute11-12.jpg");
+  img13 = loadImage      ("https://raw.githubusercontent.com/lauracondes/evaluacion01/master/img/ute13-14.jpg");
+
+}
+
+function setup() {
+createCanvas(anchopantalla, altopantalla);
+  background(255);
+
+for (var x = 0; x < 12; x++) {
+ foto[x] = loadImage(datos[x].foto);
+ }
+
+  sel = createSelect();
+  sel.position(10, 10);
+  sel.option('Seleccionar...');
+  sel.option('Entradas');
+  sel.option('Índole');
+  sel.option('Tipos de Artículo');
+  sel.changed(CambiaSeleccion);
+}
+function draw() {
+   for (var x = 0; x < 12; x++) {
+    foto = createImg(data[x].foto);
+    foto.hide();
+    foto(foto, (x+1), 300, 100, 150);
+  }
+}
+function CambiaSeleccion() {
+  var item = sel.value();
+  var xtext=14;
+  var ytext=50;
+  var offset=20;
+  var offset2=20;
+  var salto1=40;
+  var ancho=70;
+  var alto=30;
+  var maxentrada=-1;
+  var maxanchoentrada=-1;
+  var anchorect=3;
+  var offsetcontenido=0;
+  var offsetx=0;
+  var offsety=0;
+  var maxindole=-1;
+  var maxanchoindole=-1;
+  var maxtipo=-1;
+  var maxanchotipo=-1;
+  var anchoimagen=0;
+  var altoimagen=0;
+  background(255);
+  textSize(14);
+ 
+  if(item=="Entradas"){
+  
+    for(var y=0;y<12;y++){
+      for(var j=0;j<6;j++){
+        if(datos[y].entradas[j]>maxentrada)
+          maxentrada=datos[y].entradas[j];
+      }
+    }
+ 
+    for(var x =0;x<6;x++){
+      fill(entradas[x].r, entradas[x].g, entradas[x].b,alfa);
+      noStroke();
+      ancho=textWidth(entradas[x].Valor)+5;
+      
+      if (ancho>maxanchoentrada){
+        maxanchoentrada=ancho;
+      }
+      rect(xtext-2,ytext + offset-20,ancho,alto);
+      fill(0,0,255);
+      text(entradas[x].Valor, xtext, ytext + offset);
+      offset+=salto1;
+    } 
+    offsetcontenido=0;
+    maxanchoentrada+=20;
+    
+    noStroke();
+    for(var y=0;y<12;y++){
+      offsety=20;
+      for(var j=0;j<6;j++){
+        fill(entradas[j].r, entradas[j].g, entradas[j].b,alfa);
+        offsetx=0;
+        for(var k=0;k<datos[y].entradas[j];k++){
+          rect(maxanchoentrada+offsetcontenido+offsetx,ytext+offsety-20,anchorect,alto);
+          offsetx+=anchorect+1;
+        }
+
+        fill(0);
+        textSize(10);
+        text(datos[y].entradas[j], maxanchoentrada+offsetcontenido+offsetx,ytext+offsety);
+        offsety+=salto1;
+      }
+      offsetcontenido+=maxentrada*(anchorect+1)+12;
+    }
+text("UTE1",125,370)
+image(img1, 110, 290, 50, 70);
+      
+text("UTE2",175,370)
+image(img2, 165, 290 , 50, 70);
+      
+text("UTE3",230,370)
+image(img3, 220, 290, 50, 70);
+      
+text("UTE4",285,370)
+image(img4, 275, 290, 50, 70);
+      
+text("UTE5",340,370)
+image(img5, 330, 290, 50, 70);
+
+text("UTE6",400,370)
+image(img6, 390, 290, 50, 70);
+      
+text("UTE7",460,370)
+image(img7, 450, 290, 50, 70);
+      
+text("UTE8",520,370)
+image(img8, 510, 290, 50, 70);
+
+text("UTE9",580,370)
+image(img9, 570, 290, 50, 70);
+            
+text("UTE10",635,370)
+image(img10, 630, 290, 50, 70);
+
+text("UTE11-12",690,370)
+image(img11, 690, 290, 50, 70);
+      
+text("UTE13-14",750,370)
+image(img13, 750, 290, 50, 70);
+  }
+  
+  if(item=="Índole"){
+
+    for(var y=0;y<12;y++){
+      for(var j=0;j<4;j++){
+        if(datos[y].indole[j]>maxindole)
+          maxindole=datos[y].indole[j];
+      }
+    }
+    
+    for(var x =0;x<4;x++){
+      fill(indoles[x].r, indoles[x].g, indoles[x].b,alfa);
+      noStroke();
+      ancho=textWidth(indoles[x].Valor)+5;
+      if (ancho>maxanchoindole){
+        maxanchoindole=ancho;
+      }
+      rect(xtext-2,ytext + offset-20,ancho,alto);
+      fill(0,0,255);
+      text(indoles[x].Valor, xtext, ytext + offset);
+      offset+=salto1;
+    } 
+    
+    offsetcontenido=0;
+    maxanchoindole+=20;
+    noStroke();
+    for(var y=0;y<12;y++){
+      offsety=20;
+      for(var j=0;j<4;j++){
+        fill(indoles[j].r, indoles[j].g, indoles[j].b,alfa);
+        offsetx=0;
+        for(var k=0;k<datos[y].indole[j];k++){
+          rect(maxanchoindole+offsetcontenido+offsetx,ytext+offsety-20,anchorect,alto);
+          offsetx+=anchorect+1;
+        }
+        
+        fill(0);
+        textSize(10);
+        text(datos[y].indole[j], maxanchoindole+offsetcontenido+offsetx,ytext+offsety);
+        offsety+=salto1;
+      }
+      offsetcontenido+=maxindole*(anchorect+1)+12;
+
+text("UTE1",125,310)
+image(img1, 110, 220, 50, 70);
+      
+text("UTE2",175,310)
+image(img2, 165, 220 , 50, 70);
+      
+text("UTE3",230,310)
+image(img3, 220, 220, 50, 70);
+      
+text("UTE4",285,310)
+image(img4, 275, 220, 50, 70);
+      
+text("UTE5",340,310)
+image(img5, 330, 220, 50, 70);
+
+text("UTE6",400,310)
+image(img6, 390, 220, 50, 70);
+      
+text("UTE7",460,310)
+image(img7, 450, 220, 50, 70);
+      
+text("UTE8",520,310)
+image(img8, 510, 220, 50, 70);
+
+text("UTE9",580,310)
+image(img9, 570, 220, 50, 70);
+            
+text("UTE10",635,310)
+image(img10, 630, 220, 50, 70);
+
+text("UTE11-12",690,310)
+image(img11, 690, 220, 50, 70);
+      
+text("UTE13-14",750,310)
+image(img13, 750, 220, 50, 70);
+      
+    }
+
+  }
+
+  if(item=="Tipos de Artículo"){
+    //buscar el mayor valor de Tipos
+    for(var y=0;y<12;y++){
+      for(var j=0;j<5;j++){
+        if(datos[y].tipo[j]>maxtipo)
+          maxtipo=datos[y].tipo[j];
+      }
+    }
+
+    for(var x =0;x<5;x++){
+      fill(tipos[x].r, tipos[x].g, tipos[x].b,alfa);
+      noStroke();
+      ancho=textWidth(tipos[x].Valor)+5;
+
+      if (ancho>maxanchotipo){
+        maxanchotipo=ancho;
+      }
+      rect(xtext-2,ytext + offset-20,ancho,alto);
+      fill(0,0,255);
+      text(tipos[x].Valor, xtext, ytext + offset);
+      offset+=salto1;
+    }
+    
+    offsetcontenido=0;
+    maxanchotipo+=20;
+    noStroke();
+    for(var y=0;y<12;y++){//12 libros
+      offsety=20;
+      for(var j=0;j<5;j++){//5 tipos de tipo
+        fill(tipos[j].r, tipos[j].g, tipos[j].b,alfa);
+        offsetx=0;
+        for(var k=0;k<datos[y].tipo[j];k++){
+          rect(maxanchotipo+offsetcontenido+offsetx,ytext+offsety-20,anchorect,alto);
+          offsetx+=anchorect+1;
+        }
+  
+        fill(0);
+        textSize(10);
+        text(datos[y].tipo[j], maxanchotipo+offsetcontenido+offsetx,ytext+offsety);
+        offsety+=salto1;
+      }
+      offsetcontenido+=maxtipo*(anchorect+1)+12;
+
+text("UTE1",163,345)
+image(img1, 150, 250, 50, 70);
+      
+text("UTE2",223,345)
+image(img2, 210, 250, 50, 70);
+      
+text("UTE3",283,345)
+image(img3, 270, 250, 50, 70);
+      
+text("UTE4",343,345)
+image(img4, 330, 250, 50, 70);
+      
+text("UTE5",403,345)
+image(img5, 390, 250, 50, 70);
+
+text("UTE6",463,345)
+image(img6, 450, 250, 50, 70);
+      
+text("UTE7",523,345)
+image(img7, 510, 250, 50, 70);
+      
+text("UTE8",580,345)
+image(img8, 570, 250, 50, 70);
+
+text("UTE9",640,345)
+image(img9, 630, 250, 50, 70);
+            
+text("UTE10",700,345)
+image(img10, 690, 250, 50, 70);
+
+text("UTE11",760,345)
+image(img11, 750, 250, 50, 70);
+      
+text("UTE12",820,345)
+image(img13, 810, 250, 50, 70);
+            
+    }
+
+  }
+  
+  
+}
+    </script>
+
+</body>
+
+</html>
